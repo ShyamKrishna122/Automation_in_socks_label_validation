@@ -2,7 +2,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 import sqlite3
 from _sqlite3 import Error
 from PyQt5.QtGui import QPainter, QPen, QPixmap
+<<<<<<< HEAD
 from PyQt5.QtWidgets import QLabel, QLabel, QLineEdit, QVBoxLayout
+=======
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView, QGridLayout, QHBoxLayout, QLabel, QLabel, QLineEdit, QVBoxLayout
+>>>>>>> 63212fbc0a3562f9f4ec17e62048b7a17e581dbc
 
 class Viewer(QtWidgets.QGraphicsView):
     def __init__(self,main, parent=None):
@@ -133,7 +137,11 @@ class Viewer(QtWidgets.QGraphicsView):
          
     
     def connect_db(self):
+<<<<<<< HEAD
         database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
+=======
+        database = r"C:\sqlite\db\\info.db"
+>>>>>>> 63212fbc0a3562f9f4ec17e62048b7a17e581dbc
         
         sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS Models (
                                         id text NOT NULL,
@@ -295,7 +303,11 @@ class QImageViewer(QtWidgets.QMainWindow):
         )
 
     def createMenus(self):
+<<<<<<< HEAD
         self.fileMenu = QtWidgets.QMenu("&File / Capture", self)
+=======
+        self.fileMenu = QtWidgets.QMenu("&File", self)
+>>>>>>> 63212fbc0a3562f9f4ec17e62048b7a17e581dbc
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addAction(self.printAct)
         self.fileMenu.addSeparator()

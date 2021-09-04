@@ -5,6 +5,7 @@ from _sqlite3 import Error
 
 class Ui_Form(object):
     def openWindow(self):
+<<<<<<< HEAD
         if(self.textBox.text() != ''):
             self.window = QtWidgets.QMainWindow()
             Form.close()
@@ -13,6 +14,15 @@ class Ui_Form(object):
             self.ui.setWindowTitle("Image Viewer - "+self.textBox.text())
             self.ui.setModel(self.textBox.text())
             #connect_db()
+=======
+        self.window =QtWidgets.QMainWindow()
+        Form.close()
+        self.ui = QImageViewer()
+        self.ui.show()
+        self.ui.setWindowTitle("Image Viewer - "+self.textBox.text())
+        self.ui.setModel(self.textBox.text())
+        #connect_db()
+>>>>>>> 63212fbc0a3562f9f4ec17e62048b7a17e581dbc
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
