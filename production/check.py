@@ -1,19 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 import sqlite3
+from main import ProductionSet
 from _sqlite3 import Error
-from PyQt5.QtGui import QPainter, QPen, QPixmap
-from PyQt5.QtWidgets import QLabel, QLabel, QLineEdit, QVBoxLayout
+from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtWidgets import  QLabel, QLabel
 
 class Viewer(QtWidgets.QGraphicsView):
     def __init__(self,main, parent=None):
         super().__init__(QtWidgets.QGraphicsScene(), parent)
         self.pixmap_item = self.scene().addPixmap(QtGui.QPixmap())
         self.button = QtWidgets.QPushButton("Save All Features")
-        self.button.clicked.connect(self.saveAllFeatures)
         self.title = QLabel()
         self.description = QLabel()
-        # self.title.setStyleSheet("background-color: white")
-        # self.description.setStyleSheet("background-color: white")
+        #self.title.setStyleSheet("background-color: white")
+        #self.description.setStyleSheet("background-color: white")
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
         #self.setBackgroundRole(QtGui.QPalette.Dark)
         
@@ -23,40 +23,36 @@ class Viewer(QtWidgets.QGraphicsView):
         self.features = []
         self.main = main
 
-    def setDescription(self):
-        self.title.setText("Steps")
-        self.title.setGeometry(QtCore.QRect(int(self.pixmap_item.pixmap().width())+18,20,500,50))
-        font = QtGui.QFont()
-        font.setPointSize(25)
-        font.setBold(True)
-        font.setWeight(50)
-        self.title.setFont(font)
-        self.scene().addWidget(self.title)
-        # self.description.setStyleSheet("background-color:white")
-        # self.title.setStyleSheet("background-color:white")
-        self.description.adjustSize()
-        self.description.setText("1)Drag and select the portion to be cropped from the socks image.\n2)After cropping the image choose the appropriate feature to be checked for the given cropped image.\n3)Save the feature and proceed similarly to select remaining features.\n4)Finally save all the features to the DB. ")
-        self.description.setAlignment(QtCore.Qt.AlignLeft)
-        self.description.setGeometry(QtCore.QRect(int(self.pixmap_item.pixmap().width())+20,90,1500,500))
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        self.description.setFont(font)
-        self.scene().addWidget(self.description)
-    
-    def saveAllFeatures(self):
-        if not self.features == []:
-            self.connect_db()
-            self.main.close()
+    def setPixmap(self, pixmap, fileName):
+        self.fileName = fileName
+        self.pixmap_item.setPixmap(pixmap)
+        self.startTest()
+
+    def startTest(self):
+        self.connect_db()
+        if(any(isinstance(sub,list) for sub in self.pts)):
+            for i in range(len(self.pts)):
+                self.drawRectangle(self.pts[i],QtCore.Qt.green)
+            
+        else:
+            self.drawRectangle(self.pts,QtCore.Qt.red)
+
+    def drawRectangle(self,pts,color):
+
+        print(pts)
+        m = self.pixmap_item.pixmap()
+        p = QPainter(m)
+        p.setPen(QPen(color,2.5,QtCore.Qt.SolidLine))
+        p.drawRect(QtCore.QRect(pts[0],pts[1],pts[2]-pts[0],pts[3]-pts[1]))
+        self.pixmap_item.setPixmap(m)
+        p.end()
+
+
+        
 
     def getModel(self,model):
-        self.model = model    
-
-    def setPixmap(self, pixmap):
-        self.pixmap_item.setPixmap(pixmap)
-
-    def setButton(self):
-        self.button.setGeometry(QtCore.QRect(10,int(self.pixmap_item.pixmap().height()) + 10,150,22))
-        self.scene().addWidget(self.button)
+        self.model = model
+        print(self.model)  
 
     def zoomIn(self):
         self.scale(1.25, 1.25)
@@ -86,35 +82,21 @@ class Viewer(QtWidgets.QGraphicsView):
                 crop_pixmap = pixmap.copy(rect)
                 label = QtWidgets.QLabel(pixmap=crop_pixmap)
                 _translate = QtCore.QCoreApplication.translate
-                feature_type_label = QtWidgets.QLabel(text="Choose feature type")
-                self.feature_type_combo_box = QtWidgets.QComboBox()
-                self.feature_type_combo_box.addItem("Text")
-                self.feature_type_combo_box.addItem("Image")
-                self.feature_type_combo_box.addItem("RFID")
-                push_button = QtWidgets.QPushButton("Add Feature")
                 self.dialog = QtWidgets.QDialog(self)
-                push_button.clicked.connect(self.add_feature)
                 lay = QtWidgets.QVBoxLayout(self.dialog)
                 lay.addWidget(label)
-                lay.addWidget(feature_type_label)
-                lay.addWidget(self.feature_type_combo_box)
-                lay.addWidget(push_button)
                 self.dialog.exec()
             self.last_rect = QtCore.QRectF()
         else:
             self.last_rect = QtCore.QRectF(fromScenePoint, toScenePoint)
 
-    def add_feature(self):
-        self.features.append(Feature(self.model,self.x,self.y,self.right,self.bottom,self.feature_type_combo_box.currentText()))
-        self.dialog.close()
-        m = self.pixmap_item.pixmap()
-        p = QPainter(m)
-        p.setPen(QPen(QtCore.Qt.red,2.5,QtCore.Qt.SolidLine))
-        p.drawRect(QtCore.QRect(self.x,self.y,self.width, self.height))
-        self.setPixmap(m)
-        p.end()
-
     def create_connection(self,db_file):
+        """ create a database connection to the SQLite database
+        specified by db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+        print("yes")
         conn = None
         try:
             conn = sqlite3.connect(db_file)
@@ -125,53 +107,58 @@ class Viewer(QtWidgets.QGraphicsView):
 
 
     def create_model(self,conn, model):
+        """
+        Create a new project into the projects table
+        :param conn:
+        :param project:
+        :return: project id
+        """
         sql = ''' INSERT INTO Models(id,x,y,right,bottom,feature)
                 VALUES(?,?,?,?,?,?) '''
         cur = conn.cursor()
         cur.execute(sql, model)
         conn.commit()
+        print("yes")
          
     
     def connect_db(self):
         database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
         
-        sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS Models (
-                                        id text NOT NULL,
-                                        x text NOT NULL,
-                                        y text NOT NULL,
-                                        right text NOT NULL,
-                                        bottom text NOT NULL,
-                                        feature text NOT NULL
-                                    );"""
+        query = "SELECT * FROM Models WHERE id = '"+self.model+"'"; 
 
+    # create a database connection
         conn = self.create_connection(database)
 
+    # create tables
         if conn is not None:
-            self.create_table(conn, sql_create_projects_table)
-            for i in range(len(self.features)):
-                model = (self.features[i].modelId,self.features[i].x,self.features[i].y,self.features[i].right,self.features[i].bottom,self.features[i].feature_type)
-                self.create_model(conn, model)
+        # create projects table
+        # model = (self.model,self.x,self.y,self.right,self.bottom,self.feature_type_combo_box.currentText())
+            try:
+                c = conn.cursor()
+                c.execute(query)
+                rows = c.fetchall()
+                feature_pts = []
+                feature_types = []
+                for row in rows:
+                    print(row)
+                    feature_pts.append([int(row[1]),int(row[2]),int(row[3]),int(row[4])])
+                    feature_types.append(row[5])
+                self.feature_pts = feature_pts
+                print(feature_pts)
+                print(feature_types)
+                obj = ProductionSet(feature_pts,feature_types,self.fileName)
+                self.pts = obj.checkAllFeatures()
+                if(any(isinstance(sub,list) for sub in self.pts)):
+                    print("VALID CARD !")
+
+
+            except Error as e:
+                print(e)
         else:
             print("Error! cannot create the database connection.")
+        # create a new project
 
-
-    def create_table(self,conn, create_table_sql):
-        try:
-            c = conn.cursor()
-            c.execute(create_table_sql)
-        except Error as e:
-            print(e)
-                
-class Feature:
-    def __init__(self,modelId,x,y,right,bottom,feature_type):
-        self.modelId = modelId
-        self.x = x
-        self.y = y
-        self.right = right
-        self.bottom = bottom
-        self.feature_type = feature_type
-
-class QImageViewer(QtWidgets.QMainWindow):
+class QImageViewers(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
 
@@ -183,10 +170,12 @@ class QImageViewer(QtWidgets.QMainWindow):
         self.createActions()
         self.createMenus()
         self.showMaximized()
-    
+
     def setModel(self,model):
         self.model = model
         self.view.getModel(self.model)
+        print(self.model)  
+
 
     def open(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
@@ -203,9 +192,7 @@ class QImageViewer(QtWidgets.QMainWindow):
                 )
                 return
 
-            self.view.setPixmap(pixmap)
-            self.view.setButton()
-            self.view.setDescription()
+            self.view.setPixmap(pixmap,fileName)
             self.printAct.setEnabled(True)
             self.fitToWindowAct.setEnabled(True)
             self.updateActions()
@@ -321,6 +308,6 @@ if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    imageViewer = QImageViewer()
+    imageViewer = QImageViewers()
     imageViewer.show()
     sys.exit(app.exec_())
