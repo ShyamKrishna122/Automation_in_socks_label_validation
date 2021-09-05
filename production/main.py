@@ -15,11 +15,11 @@ def setPytessaract():
     pytesseract.pytesseract.tesseract_cmd = 'D:/Tesseract-OCR/tesseract.exe'
 
 class ProductionSet():
-    def __init__(self,feature_pts,feature_types,test_img):
+    def __init__(self,feature_pts,feature_types,test_img,model):
         self.feature_pts = feature_pts
         self.feature_types = feature_types
         setPytessaract()
-        self.mas_img = cv.imread('C:/Users/HARIVIGNESH A/Downloads/validation/images/new_master2.jpg')
+        self.mas_img = cv.imread(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\master_cards\\{model}.jpg")
         self.test_img =  cv.imread(test_img)
         self.test2 = self.test_img.copy()
         self.isValid = True

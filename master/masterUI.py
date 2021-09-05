@@ -15,15 +15,6 @@ class Ui_Form(object):
             self.ui.setModel(self.textBox.text())
             #connect_db()
 
-        self.window =QtWidgets.QMainWindow()
-        Form.close()
-        self.ui = QImageViewer()
-        self.ui.show()
-        self.ui.setWindowTitle("Image Viewer - "+self.textBox.text())
-        self.ui.setModel(self.textBox.text())
-        #connect_db()
-
-
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(564, 435)

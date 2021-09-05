@@ -6,9 +6,18 @@ from PyQt5.QtGui import QPainter, QPen, QPixmap
 from PyQt5.QtWidgets import QLabel, QLabel, QLineEdit, QVBoxLayout
 
 from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView, QGridLayout, QHBoxLayout, QLabel, QLabel, QLineEdit, QVBoxLayout
+import cv2
 
 
 class Viewer(QtWidgets.QGraphicsView):
+
+    def setFileName(self,fileName):
+        self.fileName = fileName
+
+    def saveImage(self):
+        img = cv2.imread(self.fileName)
+        cv2.imwrite(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\master_cards\\{self.model}.jpg",img)
+
     def __init__(self,main, parent=None):
         super().__init__(QtWidgets.QGraphicsScene(), parent)
         self.pixmap_item = self.scene().addPixmap(QtGui.QPixmap())
@@ -54,6 +63,9 @@ class Viewer(QtWidgets.QGraphicsView):
 
     def getModel(self,model):
         self.model = model    
+    
+    def getFileName(self,fileName):
+        self.fileName = fileName
 
     def setPixmap(self, pixmap):
         self.pixmap_item.setPixmap(pixmap)
@@ -140,8 +152,6 @@ class Viewer(QtWidgets.QGraphicsView):
 
         database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
 
-        database = r"C:\sqlite\db\\info.db"
-
         
         sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS Models (
                                         id text NOT NULL,
@@ -159,6 +169,8 @@ class Viewer(QtWidgets.QGraphicsView):
             for i in range(len(self.features)):
                 model = (self.features[i].modelId,self.features[i].x,self.features[i].y,self.features[i].right,self.features[i].bottom,self.features[i].feature_type)
                 self.create_model(conn, model)
+                self.saveImage()
+
         else:
             print("Error! cannot create the database connection.")
 
@@ -195,6 +207,7 @@ class QImageViewer(QtWidgets.QMainWindow):
     def setModel(self,model):
         self.model = model
         self.view.getModel(self.model)
+        
 
     def open(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
@@ -204,6 +217,7 @@ class QImageViewer(QtWidgets.QMainWindow):
             "Images (*.png *.jpeg *.jpg *.bmp *.gif)",
         )
         if fileName:
+            self.view.setFileName(fileName)
             pixmap = QtGui.QPixmap(fileName)
             if pixmap.isNull():
                 QtWidgets.QMessageBox.information(
@@ -305,8 +319,6 @@ class QImageViewer(QtWidgets.QMainWindow):
     def createMenus(self):
 
         self.fileMenu = QtWidgets.QMenu("&File / Capture", self)
-
-        self.fileMenu = QtWidgets.QMenu("&File", self)
  
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addAction(self.printAct)

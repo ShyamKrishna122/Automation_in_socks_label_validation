@@ -1,6 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 import sqlite3
+
+import cv2
+from numpy import random
 from main import ProductionSet
+from yolo_object_detection_webcam import yoloDetectionModel
 from _sqlite3 import Error
 from PyQt5.QtGui import QPainter, QPen
 from PyQt5.QtWidgets import  QLabel, QLabel
@@ -23,10 +27,12 @@ class Viewer(QtWidgets.QGraphicsView):
         self.features = []
         self.main = main
 
-    def setPixmap(self, pixmap, fileName):
+    def setPixmap(self, pixmap, fileName, crop_coor):
+        self.crop_coor = crop_coor
         self.fileName = fileName
         self.pixmap_item.setPixmap(pixmap)
         self.startTest()
+
 
     def startTest(self):
         self.connect_db()
@@ -46,8 +52,6 @@ class Viewer(QtWidgets.QGraphicsView):
         p.drawRect(QtCore.QRect(pts[0],pts[1],pts[2]-pts[0],pts[3]-pts[1]))
         self.pixmap_item.setPixmap(m)
         p.end()
-
-
         
 
     def getModel(self,model):
@@ -146,7 +150,7 @@ class Viewer(QtWidgets.QGraphicsView):
                 self.feature_pts = feature_pts
                 print(feature_pts)
                 print(feature_types)
-                obj = ProductionSet(feature_pts,feature_types,self.fileName)
+                obj = ProductionSet(feature_pts,feature_types,self.fileName,self.model)
                 self.pts = obj.checkAllFeatures()
                 if(any(isinstance(sub,list) for sub in self.pts)):
                     print("VALID CARD !")
@@ -185,6 +189,14 @@ class QImageViewers(QtWidgets.QMainWindow):
             "Images (*.png *.jpeg *.jpg *.bmp *.gif)",
         )
         if fileName:
+            model = yoloDetectionModel(fileName)
+            crop_coordinates = model.crop_coor_func()
+            img = cv2.imread(fileName)
+            # img = cv2.resize(img, None, fx=0.7, fy=0.7)
+            img = img[crop_coordinates[1]:crop_coordinates[3],crop_coordinates[0]:crop_coordinates[2]]
+            rand = random.randint(50)
+            cv2.imwrite(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\images\\{rand}.jpg",img)
+            fileName = f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\images\\{rand}.jpg"
             pixmap = QtGui.QPixmap(fileName)
             if pixmap.isNull():
                 QtWidgets.QMessageBox.information(
@@ -192,7 +204,7 @@ class QImageViewers(QtWidgets.QMainWindow):
                 )
                 return
 
-            self.view.setPixmap(pixmap,fileName)
+            self.view.setPixmap(pixmap,fileName,crop_coordinates)
             self.printAct.setEnabled(True)
             self.fitToWindowAct.setEnabled(True)
             self.updateActions()

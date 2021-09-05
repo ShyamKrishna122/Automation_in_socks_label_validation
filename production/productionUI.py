@@ -68,6 +68,7 @@ class Ui_Form(object):
         else:
             print("Error! cannot create the database connection.")
         # create a new project
+        # what diff da
         
         
         self.pushButton.setText(_translate("Form", "OK"))
