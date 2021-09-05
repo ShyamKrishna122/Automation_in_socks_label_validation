@@ -19,5 +19,5 @@ If any one of the features is not matched with the corresponding feature of the 
 
 # Getting Started:
 
-Training and Weights file : <a href="https://drive.google.com/drive/folders/1AgvQbPaQzvm0TTzzf8aSUhYr6TEaTsG3?usp=sharing">
+Training and Weights file : <a href="https://drive.google.com/drive/folders/1AgvQbPaQzvm0TTzzf8aSUhYr6TEaTsG3?usp=sharing">LINK</a>
 
