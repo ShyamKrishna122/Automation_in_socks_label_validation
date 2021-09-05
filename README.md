@@ -8,10 +8,10 @@ For comparing the test socks card with the master socks card, we first mark the 
 
 Then a test socks card before being validated is first detected from the image by applying object detection using <b>machine learning</b>. After the test socks card alone is cropped from the image, the test socks card is compared with the master socks card using the following techniques like:
 <ol>
-  <li>Object Detection using YOLO-with the help of machine learning we are separating the test socks card from the background.<li>
+  <li>Object Detection using YOLO-with the help of machine learning we are separating the test socks card from the background.</li>
   <li>Template matching - is done for identifying the position of a particular feature by using the coordinates of the corresponding feature of the master socks card.</li>
   <li>Feature matching - is done after template matching for comparing the images present in the test socks card with that of the master socks card.</li>
-<ol>
+</ol>
   
 If any one of the features is not matched with the corresponding feature of the master socks card then the test card is an invalid card and vice-versa.
   
