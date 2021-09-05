@@ -19,6 +19,8 @@ If any one of the features is not matched with the corresponding feature of the 
 
 # Getting Started:
 
+Download Tessaract file (mention tessaract.exe path in files appropriately): <a href = "https://sourceforge.net/projects/tesseract-ocr-alt/files/" >tessaract-ocr</a>
+</p>
 Training and Weights file : <a href="https://drive.google.com/drive/folders/1AgvQbPaQzvm0TTzzf8aSUhYr6TEaTsG3?usp=sharing">LINK</a>
 </p>
 Working Demo Video Link : <a href="https://drive.google.com/file/d/1ZuY6T5Ofgd3tofcDj0HYsfQuCCbu3gc4/view?usp=sharing">Video Link</a>
