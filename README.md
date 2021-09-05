@@ -10,7 +10,8 @@ Then a test socks card before being validated is first detected from the image b
 <ol>
   <li>Object Detection using YOLO-with the help of machine learning we are separating the test socks card from the background.</li>
   <li>Template matching - is done for identifying the position of a particular feature by using the coordinates of the corresponding feature of the master socks card.</li>
-  <li>Feature matching - is done after template matching for comparing the images present in the test socks card with that of the master socks card.</li>
+  <li>Feature matching done by finding the mse between the two images - is done after template matching for comparing the images present in the test socks card with that of the master socks card.</li>
+  <li>Text recognition using Optical Character Recognition(OCR) - is done after template matching for comparing the text information present in the test socks card with that of the master socks card. 
 </ol>
   
 If any one of the features is not matched with the corresponding feature of the master socks card then the test card is an invalid card and vice-versa.
