@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 from constants import Constants
-=======
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 import cv2
 import cv2 as cv
 import numpy as np
@@ -16,31 +13,19 @@ import time
 start_time = time.time()
 
 def setPytessaract():
-<<<<<<< HEAD
     pytesseract.pytesseract.tesseract_cmd = Constants.tessaract_exe_path
-=======
-    pytesseract.pytesseract.tesseract_cmd = 'D:/Tesseract-OCR/tesseract.exe'
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
 class ProductionSet():
     def __init__(self,feature_pts,feature_types,test_img,model):
         self.feature_pts = feature_pts
         self.feature_types = feature_types
         setPytessaract()
-<<<<<<< HEAD
         self.mas_img = cv.imread(f"{Constants.master_image_path}{model}.jpg")
-=======
-        self.mas_img = cv.imread(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\master_cards\\{model}.jpg")
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         self.test_img =  cv.imread(test_img)
         self.test2 = self.test_img.copy()
         self.isValid = True
         self.correctCoordinates = []
-<<<<<<< HEAD
         self.result = {}
-=======
-        print("hi")
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         # self.checkAllFeatures()
 
 
@@ -61,10 +46,6 @@ class ProductionSet():
         bottom_right = (top_left[0] + w, top_left[1] + h)
         print(top_left,bottom_right)
         pts = top_left + bottom_right
-<<<<<<< HEAD
-=======
-        #print("OK")
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         cv.rectangle(img,top_left, bottom_right, (255,0,0), 2)
         img = cv.resize(img,(300,800))
         cv.imshow('detected',img)
@@ -99,15 +80,9 @@ class ProductionSet():
 
         # cv2.imshow('master image', threshold_img)
 
-<<<<<<< HEAD
         # cv2.waitKey(0)
 
         # cv2.destroyAllWindows()
-=======
-        cv2.waitKey(0)
-
-        cv2.destroyAllWindows()
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
         last_word = ''
         text = ''
@@ -260,7 +235,6 @@ class ProductionSet():
             if(not self.isValid):
                 print("Stopped in feature "+str(i))
                 print("INVALID CARD ELIMINATE !")
-<<<<<<< HEAD
                 self.result["Feature "+str(i+1)+" - "+str(ftype)] = ' Not matched '
                 return detected_pts
 
@@ -268,10 +242,6 @@ class ProductionSet():
                 self.result["Feature "+str(i+1)+" - "+str(ftype)] = ' Matched ' 
             
 
-=======
-                return detected_pts
-
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
             self.correctCoordinates.append(list(detected_pts))
 
         return self.correctCoordinates

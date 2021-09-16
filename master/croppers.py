@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 from constants import Constants
-=======
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 import sqlite3
 from _sqlite3 import Error
@@ -20,11 +17,7 @@ class Viewer(QtWidgets.QGraphicsView):
 
     def saveImage(self):
         img = cv2.imread(self.fileName)
-<<<<<<< HEAD
         cv2.imwrite(f"{Constants.master_image_path}{self.model}.jpg",img)
-=======
-        cv2.imwrite(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\master_cards\\{self.model}.jpg",img)
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
     def __init__(self,main, parent=None):
         super().__init__(QtWidgets.QGraphicsScene(), parent)
@@ -36,10 +29,6 @@ class Viewer(QtWidgets.QGraphicsView):
         # self.title.setStyleSheet("background-color: white")
         # self.description.setStyleSheet("background-color: white")
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-<<<<<<< HEAD
-
-=======
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         #self.setBackgroundRole(QtGui.QPalette.Dark)
         
         self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
@@ -162,11 +151,7 @@ class Viewer(QtWidgets.QGraphicsView):
     
     def connect_db(self):
 
-<<<<<<< HEAD
         database = Constants.database_path
-=======
-        database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
->>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
         
         sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS Models (
