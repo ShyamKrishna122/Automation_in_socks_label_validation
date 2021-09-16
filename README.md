@@ -23,7 +23,7 @@ Download Tessaract file (mention tessaract.exe path in files appropriately): <a 
 </p>
 Training and Weights file : <a href="https://drive.google.com/drive/folders/1AgvQbPaQzvm0TTzzf8aSUhYr6TEaTsG3?usp=sharing">LINK</a>
 </p>
-Working Demo Video Link : <a href="https://drive.google.com/file/d/1ZuY6T5Ofgd3tofcDj0HYsfQuCCbu3gc4/view?usp=sharing">Video Link</a>
+Working Demo Video Link : <a href="https://drive.google.com/file/d/1jZevcWyvP8egjOecXs6oD600hkJ1MNfk/view?usp=sharing">Video Link</a>
 
 ## NOTE:
 Also we can extend this socks card validation to **many other product label validation.**
