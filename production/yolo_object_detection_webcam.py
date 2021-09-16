@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 from constants import Constants
+=======
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 import cv2
 import numpy as np
 
@@ -9,7 +12,11 @@ class yoloDetectionModel():
     def crop_coor_func(self):
 
         img =self.img
+<<<<<<< HEAD
         net = cv2.dnn.readNet(Constants.yolo_weights_file,Constants.yolo_config_file)
+=======
+        net = cv2.dnn.readNet("C:/Users/HARIVIGNESH A/Downloads/train_yolo_to_detect_custom_object/yolo_custom_detection/yolov3_training_last.weights", "C:/Users/HARIVIGNESH A/Downloads/train_yolo_to_detect_custom_object/yolo_custom_detection/yolov3_testing.cfg")
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
         classes = ["socks_card"]
 

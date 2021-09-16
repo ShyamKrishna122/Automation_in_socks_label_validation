@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 from constants import Constants
+=======
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 from _sqlite3 import Error
@@ -57,7 +60,11 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Welcome"))
         self.label_2.setText(_translate("Form", "Choose a Master Model"))
+<<<<<<< HEAD
         database = Constants.database_path
+=======
+        database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         conn = self.create_connection(database)
         if conn is not None:
         # create projects table
@@ -76,6 +83,10 @@ class Ui_Form(object):
         self.pushButton_2.setText(_translate("Form", "Exit"))
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

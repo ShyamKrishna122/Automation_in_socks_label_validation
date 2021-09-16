@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 from constants import Constants
+=======
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 import sqlite3
 
@@ -7,7 +10,11 @@ from numpy import random
 from main import ProductionSet
 from yolo_object_detection_webcam import yoloDetectionModel
 from _sqlite3 import Error
+<<<<<<< HEAD
 from PyQt5.QtGui import QColor, QPainter, QPalette, QPen
+=======
+from PyQt5.QtGui import QPainter, QPen
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 from PyQt5.QtWidgets import  QLabel, QLabel
 
 class Viewer(QtWidgets.QGraphicsView):
@@ -17,7 +24,10 @@ class Viewer(QtWidgets.QGraphicsView):
         self.button = QtWidgets.QPushButton("Save All Features")
         self.title = QLabel()
         self.description = QLabel()
+<<<<<<< HEAD
         self.finalResult = QLabel()
+=======
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         #self.title.setStyleSheet("background-color: white")
         #self.description.setStyleSheet("background-color: white")
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
@@ -29,6 +39,7 @@ class Viewer(QtWidgets.QGraphicsView):
         self.features = []
         self.main = main
 
+<<<<<<< HEAD
     def setDescription(self):
         self.title.setText("Result")
         self.title.setAlignment(QtCore.Qt.AlignCenter)
@@ -63,6 +74,8 @@ class Viewer(QtWidgets.QGraphicsView):
         
         self.scene().addWidget(self.finalResult)
 
+=======
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
     def setPixmap(self, pixmap, fileName, crop_coor):
         self.crop_coor = crop_coor
         self.fileName = fileName
@@ -162,7 +175,11 @@ class Viewer(QtWidgets.QGraphicsView):
          
     
     def connect_db(self):
+<<<<<<< HEAD
         database = Constants.database_path
+=======
+        database = "C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\db\\info.db"
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
         
         query = "SELECT * FROM Models WHERE id = '"+self.model+"'"; 
 
@@ -188,6 +205,7 @@ class Viewer(QtWidgets.QGraphicsView):
                 print(feature_types)
                 obj = ProductionSet(feature_pts,feature_types,self.fileName,self.model)
                 self.pts = obj.checkAllFeatures()
+<<<<<<< HEAD
                 result = ''
                 for featureName,featureResult in obj.result.items():
                     result += featureName+" : "+featureResult+"\n"
@@ -199,6 +217,10 @@ class Viewer(QtWidgets.QGraphicsView):
                 else:
                     self.finalResult.setStyleSheet("background-color:white;color: rgb(255,0,0)")
                     self.finalResult.setText(" INVALID CARD ! ")
+=======
+                if(any(isinstance(sub,list) for sub in self.pts)):
+                    print("VALID CARD !")
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
 
 
             except Error as e:
@@ -240,8 +262,13 @@ class QImageViewers(QtWidgets.QMainWindow):
             # img = cv2.resize(img, None, fx=0.7, fy=0.7)
             img = img[crop_coordinates[1]:crop_coordinates[3],crop_coordinates[0]:crop_coordinates[2]]
             rand = random.randint(50)
+<<<<<<< HEAD
             cv2.imwrite(f"{Constants.iteration_test_images}{rand}.jpg",img)
             fileName = f"{Constants.iteration_test_images}{rand}.jpg"
+=======
+            cv2.imwrite(f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\images\\{rand}.jpg",img)
+            fileName = f"C:\\Users\\HARIVIGNESH A\\Downloads\\validation\\images\\{rand}.jpg"
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
             pixmap = QtGui.QPixmap(fileName)
             if pixmap.isNull():
                 QtWidgets.QMessageBox.information(
@@ -249,10 +276,14 @@ class QImageViewers(QtWidgets.QMainWindow):
                 )
                 return
 
+<<<<<<< HEAD
             
             self.view.setPixmap(pixmap,fileName,crop_coordinates)
             self.view.setDescription()
             self.view.setFinalResult()
+=======
+            self.view.setPixmap(pixmap,fileName,crop_coordinates)
+>>>>>>> fe041c8ae2445268a62c3ce155e025afe35aca6b
             self.printAct.setEnabled(True)
             self.fitToWindowAct.setEnabled(True)
             self.updateActions()
